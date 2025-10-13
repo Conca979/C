@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-// linked list implemenation
+// (doubly) linked list implemenation
 
 typedef struct node {
   int value;

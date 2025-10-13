@@ -3,38 +3,39 @@
 
 // dynamic array-based stack
 
-typedef struct stack {
-  int top;
-  int capacity;
+typedef struct Stack {
+  int top; // current size of stack
+  int capacity; // stack's size limit
   int *arr;
-} stack;
+} Stack;
 
-void sInit(stack **s, int cap);
-void push(stack *s, int value);
-void pop(stack *s);
-void printStack(stack *s);
 //
-void parenCheck(stack *s);
-// Input: (())()     → Balanced
-// Input: (()(()     → Not balanced
+void sInit(Stack **s, int cap);
+void push(Stack *s, int value);
+void pop(Stack *s);
+int top(Stack *s);
+//
+void printStack(Stack *s);
 //
 
 int main() {
-  stack *stack = NULL;
+  Stack *stack = NULL;
   sInit(&stack, 10);
   push(stack, 23);
   push(stack, 1);
   push(stack, 10);
-  pop(stack);
   push(stack, 1);
+  push(stack, 20);
   //
   printStack(stack);
+  printf("%d", top(stack));
+
 
   return 0;
 }
 
-void sInit(stack **s, int cap) {
-  (*s) = malloc(sizeof(stack));
+void sInit(Stack **s, int cap) {
+  (*s) = malloc(sizeof(Stack));
   // int *arr = malloc(sizeof(int)*cap);
   (*s)->arr = malloc(sizeof(int)*cap);
   (*s)->capacity = cap;
@@ -42,7 +43,7 @@ void sInit(stack **s, int cap) {
 
 }
 
-void push(stack *s, int value) {
+void push(Stack *s, int value) {
   if (s->top == s->capacity) {
     printf("Cannot add %d into stack, stack is full\n", value);
     return;
@@ -51,7 +52,7 @@ void push(stack *s, int value) {
   s->top++;
 }
 
-void printStack(stack *s) {
+void printStack(Stack *s) {
   printf("Stack from top->bottom: ");
   int size = s->top;
   int *arr = s->arr;
@@ -61,13 +62,12 @@ void printStack(stack *s) {
   printf("\n");
 }
 
-void pop(stack *s) {
+void pop(Stack *s) {
   if (s->top == 0)
     return;
   s->top--;
 }
 
-// void parenCheck(stack *s) {
-//   int open = 0, close = 0;
-//   for ()
-// }
+int top(Stack *s) {
+  return s->arr[s->top-1];
+}

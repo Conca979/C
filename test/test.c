@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// find the longest common profix in an array of strings
+
 char* longestCommonPrefix(char** strs, int strsSize);
 
 int main() {
