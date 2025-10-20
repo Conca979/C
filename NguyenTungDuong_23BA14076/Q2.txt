@@ -1,0 +1,12 @@
+- A chat buffers should be implemented in linked list data structure
+  typedef struct messgae {
+    char message[...];
+    struct message *nextmessage;
+  } message
+  //
+  message *head = NULL; this point to the first message
+- A function to add messgae : void insertMessage(message *head, char message[]);
+- A function to delete message: void delMessage(message *head, char message[]);
+- A function to edit message: void edit(message *head, char oldmessage[], char newmessage[])
+
+complexity extimation: O(N) to traver the whole list every time

@@ -36,7 +36,7 @@ void printSubTree(int value);
 
 node *tree = NULL;
 int main() {
-  int arr[] = {17,5,4,8,11,7,20,19,21,22,23,240,45,10 ,12, 40};
+  int arr[] = {17,5,4,8,11,7,20,19,21,22,23};
   int arrSize = sizeof(arr)/sizeof(int);
   // printf("%d", arrSize);
 
@@ -49,7 +49,6 @@ int main() {
   printTreeVisual(tree);
   printf("\n");
 
-  // printf("%d\n", findNode(root, 3)->prtNode->value);
   printf("----------Debug----------\n");
   printf("minNode : %d\nmaxNode : %d\nmaxNumLength : %d\nVLOT(tree, 6, 240) : %d\nmaxLOT : %d\n", minNode(tree), maxNode(tree), numLength(maxNode(tree)), VLOT(tree, tree, 6, 240), maxLOT(tree));
   printf("Tree in pre-order : ");

@@ -21,22 +21,25 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <limits.h>
 
 void primeNum(int *primes, int length);
 int check(int *prime, int index, int number);
 void primeFactor(int *prime, int number);
+int optimize(int number);
 
 int main() {
-  int number = 999;
-  int arrSize = number/2;
+  int number = 567;
+  int arrSize = optimize(number);
+  printf("%d", arrSize);
   int arr[arrSize];
-  primeNum(arr, arrSize);
+  // primeNum(arr, arrSize);
   // for (int i = 0; i < arrSize; i++) {
   //   printf("%d ", arr[i]);
   // }
   // printf("\n");
 
-  primeFactor(arr, number);
+  // primeFactor(arr, number);
   
 
 
@@ -79,4 +82,15 @@ int check(int *prime, int index, int number) {
 
 void primeFactor(int *prime, int number) {
   check(prime, 0, number);
+}
+
+int optimize(int number) {
+  int arr[30>number?number:30];
+  primeNum(arr, 30);
+  for (int i = 30; i > 0; i--) {
+    if (number % arr[i] == 0) {
+      return number/arr[i];
+    }
+  }
+  return number;
 }
