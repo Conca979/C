@@ -183,3 +183,97 @@ void printTreeVisual(node *tree) {
   
 
 }
+
+char* longestPalindrome1(char* s) {
+  int length = 0;
+  while (s[length] != '\0') length++;
+  //
+  char *stack = malloc(length*sizeof(char));
+  int sIndex = 0;
+  int count = 0, maxSize = 0, index = 0, isFound = 0;
+  //
+  if (length == 1) {
+    return s;
+  }
+  int back = 0;
+  for (int i = 0; s[i] != '\0'; i++) {
+    if (back == 0) {
+      stack[sIndex++] = s[i];
+      back = sIndex;
+      isFound = 0;
+      if (count > maxSize) {
+        maxSize = count;
+        index = i - count + 1;
+      }
+      count = 0;
+    } else { /*sIndex >= 1*/
+      if (isFound) { // start a valid region
+        if (stack[back-1] == s[i]) {
+          while (stack[back-1] == s[i+1]) {
+            i++;
+            count++;
+          }
+          count += 2;
+          if (count > maxSize) {
+            maxSize = count;
+            index = i - count + 1;
+          }
+          back--;
+        } else {
+          if (count > maxSize) {
+            maxSize = count;
+            index = i - count + 1;
+          }
+          count = 0;
+          isFound = 0;
+          stack[sIndex++] = s[i];
+          back = sIndex;
+        }
+      } else { // not found a valid region
+        if (stack[back-1] == s[i]) {
+          count += 2;
+          isFound = 1;
+          while (stack[back-1] == s[i+1]) {
+            i++;
+            count++;
+          }
+          if (count > maxSize) {
+            maxSize = count;
+            index = i - count + 1;
+          }
+          back--;
+        } else if (back >= 2 && stack[back-2] == s[i]) {
+          count += 3;
+          isFound = 1;
+          if (count > maxSize) {
+            maxSize = count;
+            index = i - count + 1;
+          }
+          back -= 2;
+        } else {
+          if (count > maxSize) {
+            maxSize = count;
+            index = i - count + 1;
+          }
+          count = 0;
+          isFound = 0;
+          stack[sIndex++] = s[i];
+          back = sIndex;
+        }
+      }
+    }
+  }
+  if (maxSize == 0) {
+    char *result = malloc(2*sizeof(char));
+    result[0] = s[0];
+    result[1] = '\0';
+    return result;
+  }
+  char *result = malloc((maxSize+1)*sizeof(char));
+  printf("index : %d\nfirstIndex : %c\nmaxL : %d\n", index, s[index], maxSize);
+  for (int i = 0; i < maxSize; i++) {
+    result[i] = s[index + i];
+  }
+  result[maxSize] = '\0';
+  return result;
+}

@@ -27,11 +27,18 @@ int* plusOne(int* digits, int digitsSize, int* returnSize);
 char* addBinary(char* a, char* b);
 void mergeSort(int *arr, int arrSize);
 int longestValidParentheses(char* s);
+char* longestPalindrome1(char* s);
+int pairSimilarity(char *w1, char *w2);
+int longestSimilarity(char **aos, int nums);
 
 int main() {
-  char s[] = "()(()";
-  printf("%s = %d", s, longestValidParentheses(s));
-
+  char *String[] = {"", "a", "aa", "aabbcbbaa", "abccdbdcc"};
+  for (int i = 0; i < sizeof(String)/sizeof(*String); i++) {
+    printf("\"%s\" = \"%s\"\n", String[i], longestPalindrome1(String[i]));
+  }
+  //
+  // char test[] = "racecar";
+  // printf("\"%s\" = \"%s\"\n", test, longestPalindrome1(test));
 
   return 0;
 }
@@ -602,7 +609,8 @@ struct ListNode* mergeKLists(struct ListNode** lists, int listsSize) {
 // "()(())"
 // ")(())
 // "(()())"
-int longestValidParentheses(char* s) {
+int longestValidParentheses(char* s) // not completed yet
+ {
   int maxCount = 0, count = 0, size = 0, sSize = 0;
   int maxCount2 = 0;
   for (int i = 0; s[i] != '\0'; i++) {
@@ -644,4 +652,109 @@ int longestValidParentheses(char* s) {
   }
   //
   return maxCount2>maxCount?maxCount2:maxCount;
+}
+
+int pairSimilarity(char *w1, char *w2) {
+  int maxS = 0, s = 0;
+  //
+  for (int i = 0; w1[i] != '\0'; i++) {
+    for (int j = 0; w2[j] != '\0'; j++) {
+      if (w2[j] == w1[i]) {
+        for (int k = 0; w1[i+k] != '\0' && w2[j+k] != '\0' && w1[i+k] == w2[j+k]; k++) {
+          s++;
+        }
+        maxS = maxS>s?maxS:s;
+        s = 0;
+      }
+    }
+  }
+  //
+  return maxS;
+}
+
+char* longestPalindrome1(char* s) {
+  int n = strlen(s);
+  if (n == 0) return "";
+  int start = 0, maxLen = 1;
+  
+  for (int center = 0; center < n; center++) {
+    int l = center, r = center;
+  }
+  //
+  int maxS = 0, back = 0, index = 0;
+  int count = 0, isFound = 0, backWalk = 0;
+  if (n == 1) return s;
+  int len = strlen(s);
+  for (int i = 0; s[i] != '\0'; i++) {
+    if (!isFound) {
+      // printf("[%d]\n", i);
+      i = i - backWalk + 1;
+      back = i, backWalk = 0;
+    }
+    if (back < 0) back = 0;
+    if (back == 0) { // back == 0
+      if (count > maxS) {
+        maxS = count;
+        index = back;
+      }
+      isFound = 0;
+      backWalk = count;
+      count = 0;
+    } else { // back >= 1
+      if (isFound) { // in valid region
+        if (s[i] == s[back-1]) {
+          count += 2, back--;
+          if (count > maxS) {
+            maxS = count;
+            index = back;
+          }
+        } else {
+          if (count > maxS) {
+            maxS = count;
+            index = back;
+          }
+          backWalk = count;
+          isFound = 0, count = 0;
+        }
+      } else { // finding symmetric
+        if (s[i] == s[back-1]) {
+          count += 2, back--, isFound = 1;
+          while (s[i] == s[i+1]) {
+            i++, count++;
+          }
+          if (count > maxS) {
+            maxS = count;
+            index = back;
+          }
+        } else if (back >= 2) {
+          if (s[i] == s[back-2]) {
+            count += 3, back -= 2, isFound = 1;
+            if (count > maxS) {
+              maxS = count;
+              index = back;
+            }
+          } 
+        } else {
+          if (count > maxS) {
+            maxS = count;
+            index = back;
+          }
+          backWalk = count;
+          count = 0;
+        }
+      }
+    }
+  }
+  //
+  if (maxS == 0) { 
+    maxS = 1; 
+    index = 0; 
+  }
+  char *result = malloc((maxS+1)*sizeof(char));
+  for (int i = 0; i < maxS; i++) {
+    result[i] = s[index+i];
+  }
+  result[maxS] = '\0';
+  printf("[index : %d |maxS : %d]\n", index, maxS);
+  return result;
 }
