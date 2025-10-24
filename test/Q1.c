@@ -67,9 +67,7 @@ int main() {
 
 void recursive(int a, int b, int c, int arrSize) {
   // printf("%d-%d-%d  |  ", a, b, c);
-  if ((arr[a]*arr[a]+arr[b]*arr[b]) == arr[c]*arr[c]) {
-    printf("A Pythagorean triple: %d-%d-%d\n", arr[a], arr[b], arr[c]);
-  }
+  
   if (c == arrSize) {
     b++;
     c = b;
@@ -80,6 +78,10 @@ void recursive(int a, int b, int c, int arrSize) {
       if (a == (arrSize-2)) {
         return;
       }
+    }
+  } else {
+    if ((arr[a]*arr[a]+arr[b]*arr[b]) == arr[c]*arr[c]) {
+      printf("A Pythagorean triple: %d-%d-%d\n", arr[a], arr[b], arr[c]);
     }
   }
   return recursive(a, b, c+1, arrSize);

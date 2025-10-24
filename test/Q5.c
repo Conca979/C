@@ -1,47 +1,46 @@
-// Selection Sort
-// The algorithm divides the input list into two parts: the sublist
-// of elements already sorted and the unsorted sublist of
-// elements remaining to be sorted.
-// ▶ The algorithm proceeds by:
-// ▶ find the smallest element in the unsorted sublist
-// ▶ swap this element with the leftmost unsorted element, it
-// equivalents to move this element from the unsorted sublist to
-// the sorted one,
-// ▶ continue to proceed with all elements in the unsorted sublist
+// Given a number, repeatedly sum its digits until only one digit remains.
+// Example:
+// Input: 9875  
+// Step 1: 9+8+7+5 = 29  
+// Step 2: 2+9 = 11  
+// Step 3: 1+1 = 2  
+// Output: 2
 
 #include <stdio.h>
 
-void seletionSort(int *arr, int arrSize);
+int iteration(int number);
+int recursion(int number);
 
 int main() {
-  int arr[] = {17,13,12,100,8,15,2,16,14,1,3,4,19,20,10,18,7,9,11,5,6,0};
-  int arrSize = sizeof(arr)/sizeof(int);
-  int index = 0;
-  //
-  seletionSort(arr, arrSize);
-  //
-  //print out
-  for (int i = 0; i<arrSize; i++) {
-    printf("%d ", arr[i]);
-  }
+  int number = 9999;
+  printf("%d\n", iteration(number));
+  printf("%d\n", recursion(number));
+
 
   return 0;
 }
 
-void seletionSort(int *arr, int arrSize) {
-  int index = 0;
-  for (int i = 0; i<arrSize-1; i++) {
-    int min = arr[index];
-    int minIndex = index;
-    for (int j = index; j < arrSize; j++) {
-      if (arr[j] < min) {
-        min = arr[j];
-        minIndex = j;
-      }
+int iteration(int number) {
+  int temp = number;
+  while (number >= 10) {
+    temp = 0;
+    while (number != 0) {
+      temp += number%10;
+      number /= 10;
     }
-    int temp = min;
-    arr[minIndex] = arr[index];
-    arr[index] = temp;
-    index++;
+    number = temp;
   }
+  return temp;
+}
+
+int recursion(int number) {
+  int temp = 0;
+  if (number < 10) return number;
+  else {
+    while (number != 0) {
+      temp += number %10;
+      number /= 10;
+    }
+  }
+  return recursion(temp);
 }

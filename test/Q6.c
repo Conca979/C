@@ -1,30 +1,48 @@
-// insertion sort
+// Compute the sum of all elements in a 2D matrix (size n×m).
+// Example:
+// Input: 
+// 1 2 3
+// 4 5 6
+// Output: 21
 
 #include <stdio.h>
-\
-void insertionSort(int *arr, int arrSize);
+
+int sumIteration(int nums[][4], int rows);
+int sumRecursion(int nums[][4], int rows);
+int loop(int nums[][4], int rows, int columns, int token1, int token2);
 
 int main() {
-  int arr[] = {17,13,12,100,8,15,2,16,14,1,3,4,19,20,10,18,7,9,11,5,6,0};
-  int arrSize = sizeof(arr)/sizeof(int);
-  //
-  insertionSort(arr, arrSize);
-  for (int i = 0; i<arrSize; i++) {
-    printf("%d ", arr[i]);
-  }
-  //
+  int nums[][4] = {{1,2,3,4},{5,6,7,8}};
+  int rows = sizeof(nums)/(4*sizeof(int));
+
+  printf("%d\n", sumIteration(nums, rows));
+  printf("%d\n", sumRecursion(nums, rows));
+  
 
   return 0;
 }
 
-void insertionSort(int *arr, int arrSize) {
-  for (int i = 0; i < arrSize-1; i++) {
-    for (int j = i; j >= 0; j--) {
-      if (arr[j] > arr[j+1]) {
-        int temp = arr[j+1];
-        arr[j+1] = arr[j];
-        arr[j] = temp;
-      } else break;
+int sumIteration(int nums[][4], int rows) {
+  int sum = 0;
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < 4; j++) {
+      sum += nums[i][j];
     }
   }
+  return sum;
+}
+
+int sumRecursion(int nums[][4], int rows) {
+  return loop(nums, rows, 4, 0, 0);
+}
+
+int loop(int nums[][4], int rows, int columns, int token1, int token2) {
+  if (token2 >= columns) {
+    token1++;
+    token2 = 0;
+    if (token1 >= rows) {
+      return 0;
+    }
+  }
+  return nums[token1][token2] + loop(nums, rows, columns, token1, token2+1);
 }
