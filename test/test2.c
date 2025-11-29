@@ -30,15 +30,11 @@ int longestValidParentheses(char* s);
 char* longestPalindrome1(char* s);
 int pairSimilarity(char *w1, char *w2);
 int longestSimilarity(char **aos, int nums);
+int reverse(int x); 
 
 int main() {
-  char *String[] = {"", "a", "aa", "aabbcbbaa", "abccdbdcc"};
-  for (int i = 0; i < sizeof(String)/sizeof(*String); i++) {
-    printf("\"%s\" = \"%s\"\n", String[i], longestPalindrome1(String[i]));
-  }
-  //
-  // char test[] = "racecar";
-  // printf("\"%s\" = \"%s\"\n", test, longestPalindrome1(test));
+  int number = -2147483412;
+  printf("[%d -> %d]", number, reverse(number));
 
   return 0;
 }
@@ -757,4 +753,110 @@ char* longestPalindrome1(char* s) {
   result[maxS] = '\0';
   printf("[index : %d |maxS : %d]\n", index, maxS);
   return result;
+}
+
+int reverse(int x) {
+  int temp = x, numLen = 0;
+  while (temp != 0) {
+    numLen++;
+    temp /= 10;
+  }
+  if (numLen == 0) return x;
+  int arr[numLen];
+  temp = x;
+  for (int i = 0; i < numLen; i++) {
+    arr[i] = temp%10;
+    temp /= 10;
+  }
+  if (x > 0) {
+    int temp = INT_MAX, intlen = 0;
+    while (temp != 0) {
+      intlen++;
+      temp /= 10;
+    }
+    //
+    if (intlen > numLen) {
+      int rev = 0;
+      for (int i = 0; i < numLen; i++) {
+        rev += arr[numLen-1-i]*(int)pow(10, i);
+      }
+      return rev;
+    }
+    //
+    int arrInt[intlen];
+    temp = INT_MAX;
+    for (int i = 0; i < intlen; i++) {
+      arrInt[i] = temp%10;
+      temp /= 10;
+    }
+    for (int i = 0; i < intlen/2; i++) {
+      int temp = arrInt[i];
+      arrInt[i] = arrInt[intlen-1-i];
+      arrInt[intlen-1-i] = temp;
+    }
+    //
+    for (int i = 0; i < intlen; i++) {
+      printf("[%d]", arrInt[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < intlen; i++) {
+      printf("[%d]", arr[i]);
+    }
+    printf("\n");
+    //
+    for (int i = 0; i < intlen; i++) {
+      if (arrInt[i] < arr[i]) return 0;
+      else if (arrInt[i] > arr[i]) break;
+    }
+    int rev = 0;
+    for (int i = 0; i < numLen; i++) {
+      rev += arr[numLen-1-i]*(int)pow(10, i);
+    }
+    return rev;
+  } else { // x <= 0
+    int temp = INT_MIN, intlen = 0;
+    while (temp != 0) {
+      intlen++;
+      temp /= 10;
+    }
+    //
+    if (intlen > numLen) {
+      int rev = 0;
+      for (int i = 0; i < numLen; i++) {
+        rev += arr[numLen-1-i]*(int)pow(10, i);
+      }
+      return rev;
+    }
+    //
+    int arrInt[intlen];
+    temp = INT_MIN;
+    for (int i = 0; i < intlen; i++) {
+      arrInt[i] = temp%10;
+      temp /= 10;
+    }
+    for (int i = 0; i < intlen/2; i++) {
+      int temp = arrInt[i];
+      arrInt[i] = arrInt[intlen-1-i];
+      arrInt[intlen-1-i] = temp;
+    }
+    //
+    for (int i = 0; i < intlen; i++) {
+      printf("[%d]", arrInt[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < intlen; i++) {
+      printf("[%d]", arr[i]);
+    }
+    printf("\n");
+    //
+    for (int i = 0; i < intlen; i++) {
+      if (arrInt[i] > arr[i]) return 0;
+      else if (arrInt[i] < arr[i]) break;
+    }
+    int rev = 0;
+    for (int i = 0; i < numLen; i++) {
+      rev += arr[numLen-1-i]*(int)pow(10, i);
+    }
+    return rev;
+  }
 }

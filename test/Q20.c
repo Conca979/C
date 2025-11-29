@@ -1,46 +1,115 @@
-// Binary Search (Recursion vs Iteration)
-// Problem:
-// Given a sorted array and a target value, find its index using:
-// iterative binary search,
-// recursive binary search.
+// let a priority queue of elements
+// typedef struct {
+// int data;
+// int priority; // possible value [0:5]}
+// Element;
+//typedef struct {
+// int size;
+// Elemeent elements[100];
+//} Queue;
+// implement the following functions
+// init() to initialize the queue and create an initial queue with at least 6 elements (data, priority)
+// enqueue(), dequeue(), display() to add, remove and display the queue
 
 #include <stdio.h>
 
-int iteration(int *arr, int arrSize, int num);
-int recursion(int *arr, int arrSize, int num);
+#define MAX 100
+
+typedef struct {
+    int data;
+    int priority; // 0 (highest) to 5 (lowest)
+} Element;
+
+// Define the queue structure
+typedef struct {
+    int size;
+    Element elements[MAX];
+} Queue;
+
+// Function prototypes
+void init(Queue *q);
+void enqueue(Queue *q, int data, int priority);
+Element dequeue(Queue *q);
+void display(Queue q);
+
+void init(Queue *q) {
+    q->size = 0;
+
+    enqueue(q, 10, 2);
+    enqueue(q, 20, 5);
+    enqueue(q, 30, 1);
+    enqueue(q, 40, 3);
+    enqueue(q, 50, 0);
+    enqueue(q, 60, 4);
+}
+
+void enqueue(Queue *q, int data, int priority) {
+    if (q->size >= MAX) {
+        printf("Queue is full!\n");
+        return;
+    }
+
+    Element newElement;
+    newElement.data = data;
+    newElement.priority = priority;
+
+    int i = q->size - 1;
+    while (i >= 0 && q->elements[i].priority > priority) {
+        q->elements[i + 1] = q->elements[i];
+        i--;
+    }
+
+    q->elements[i + 1] = newElement;
+    q->size++;
+}
+
+Element dequeue(Queue *q) {
+    Element removed = { -1, -1 };
+
+    if (q->size == 0) {
+        printf("Queue is empty!\n");
+        return removed;
+    }
+
+    removed = q->elements[0];
+
+    for (int i = 1; i < q->size; i++) {
+        q->elements[i - 1] = q->elements[i];
+    }
+    q->size--;
+
+    return removed;
+}
+
+void display(Queue q) {
+    if (q.size == 0) {
+        printf("Queue is empty!\n");
+        return;
+    }
+
+    printf("Data\tPriority\n");
+    printf("-----------------\n");
+    for (int i = 0; i < q.size; i++) {
+        printf("%d\t%d\n", q.elements[i].data, q.elements[i].priority);
+    }
+}
 
 int main() {
-  int arr[] = {4, 15, 45, 9, 40, 27, 3, 5, 10};
-  int arrSize = sizeof(arr)/sizeof(int);
-  printf("%d\n", iteration(arr, arrSize, 11));
-  printf("%d\n", recursion(arr, arrSize, 11));
+    Queue q;
+    init(&q);
 
-  return 0;
+    printf("Initial queue:\n");
+    display(q);
+
+    printf("\nEnqueueing element (data=70, priority=1)...\n");
+    enqueue(&q, 70, 1);
+    display(q);
+
+    printf("\nDequeuing highest priority element...\n");
+    Element e = dequeue(&q);
+    printf("Dequeued: data=%d, priority=%d\n\n", e.data, e.priority);
+    display(q);
+
+    return 0;
 }
 
-int iteration(int *arr, int arrSize, int num) {
-  int index = 0, found = 0;
-  for (int i = 0; i < arrSize; i++) {
-    if (arr[i] == num) {
-      found = 1;
-      index = i;
-      break;
-    }
-  }
-  if (found) return index;
-  else return -1;
-}
-
-int recursion(int *arr, int arrSize, int num) {
-  if (arrSize == 1) {
-    if (arr[arrSize-1] == num) {
-      return arrSize-1;
-    } else return -1;
-  } else { // arrSize >= 2
-    if (arr[arrSize-1] == num) {
-      return arrSize-1;
-    } else {
-      return recursion(arr, arrSize-1, num);
-    }
-  }
-}
