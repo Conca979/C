@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Double-linked list
+// Single-linked list
 
 typedef struct Node {
     int val;
