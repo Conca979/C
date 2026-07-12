@@ -13,7 +13,7 @@ void insert(Node **head, int val);
 void printList(Node *head);
 int* max(Node *head);
 int* min(Node *head);
-int sizeOfList(Node *head);
+int listSize(Node *head);
 
 void main() {
     // Initializing linked list
@@ -40,7 +40,7 @@ void main() {
     }
 
     // Test counting
-    printf("--Linked List size: %d", sizeOfList(head));
+    printf("--Linked List size: %d", listSize(head));
 }
 
 void insert(Node **head, int val) {
@@ -120,12 +120,12 @@ int* min(Node *head) {
     }
 }
 
-int sizeOfList(Node *head) {
+int listSize(Node *head) {
     int size = 0;
     if (head == NULL) {
         return size;
     } else {
         size++;
     }
-    return size + sizeOfList(head->next);
+    return size + listSize(head->next);
 }
