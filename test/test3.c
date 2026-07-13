@@ -11,6 +11,8 @@ typedef struct Node {
 void delVal(Node **head, int val);
 void insert(Node **head, int val);
 void printList(Node *head);
+void reverseList(Node **head, Node *cur);
+
 int* max(Node *head);
 int* min(Node *head);
 int listSize(Node *head);
@@ -40,7 +42,12 @@ void main() {
     }
 
     // Test counting
-    printf("--Linked List size: %d", listSize(head));
+    printf("--Linked List size: %d\n", listSize(head));
+
+    // Test reverse
+    printList(head);
+    reverseList(&head, head);
+    printList(head);
 }
 
 void insert(Node **head, int val) {
@@ -128,4 +135,19 @@ int listSize(Node *head) {
         size++;
     }
     return size + listSize(head->next);
+}
+
+void reverseList(Node **head, Node *cur) {
+    if (cur == NULL) {
+        return;
+    } else {
+        Node *t = cur;
+        cur = cur->next;
+        if (t == (*head)) {
+            (*head) = NULL;
+        }
+        t->next = (*head);
+        (*head) = t;
+        reverseList(head, cur);
+    }
 }
